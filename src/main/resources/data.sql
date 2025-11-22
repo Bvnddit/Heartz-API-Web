@@ -13,5 +13,5 @@ INSERT INTO usuarios (rut, nombre, correo, rol, contrasena) VALUES
 ('12345678-5', 'Juan Pérez', 'juan.perez@mail.com', 'Cliente', '123456'),
 ('87654321-K', 'María González', 'maria.gonzalez@mail.com', 'Empleado', '123456'),
 ('11223344-3', 'Pedro Ramírez', 'pedro.ramirez@mail.com', 'Cliente', '123456'),
-('44332211-9', 'Ana Torres', 'ana.torres@mail.com', 'Empleado', '123456'),
+('44332211-9', 'Ana Torres', 'admin@heartz.cl', 'Empleado', '123456'),
 ('55667788-0', 'Luis Fernández', 'cliente@heartz.cl', 'Cliente', '123456');
