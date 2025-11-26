@@ -34,8 +34,8 @@ public class UsuarioController {
         return service.getUsuarioByCorreo(correo);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody @Valid UsuarioDTO dto) {
+    @PostMapping("/register")
+    public ResponseEntity<?> createUser(@RequestBody UsuarioDTO dto) {
         try {
             return ResponseEntity.ok(service.crearUsuario(dto));
         } catch (Exception e) {
@@ -51,8 +51,7 @@ public class UsuarioController {
     @PatchMapping("/{rut}")
     public ResponseEntity<?> patchUsuario(
             @PathVariable String rut,
-            @Valid @RequestBody UsuarioPatchDTO dto
-    ) {
+            @Valid @RequestBody UsuarioPatchDTO dto) {
         try {
             return ResponseEntity.ok(service.patchUsuario(rut, dto));
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.heartz.heartz_api.dto;
 
+import com.heartz.heartz_api.model.Rol;
+
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
@@ -10,5 +12,5 @@ public class UsuarioPatchDTO {
     @Email
     private String correo;
     private String contrasena;
-    private String rol;
+    private Rol rol;
 }
