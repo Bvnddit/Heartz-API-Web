@@ -14,6 +14,7 @@ public class Vinilo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idVin;
 
+    @Column(name = "nombre")
     private String nombre;
     private String artista;
     private String genero;
@@ -35,4 +36,5 @@ public class Vinilo {
     private String descripcion;
 
     private String img;
+
 }
