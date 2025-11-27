@@ -37,6 +37,8 @@ public class UsuarioController {
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody UsuarioDTO dto) {
         try {
+            // Forzar el rol CLIENTE para registro público (seguridad)
+            dto.setRol("CLIENTE");
             return ResponseEntity.ok(service.crearUsuario(dto));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
