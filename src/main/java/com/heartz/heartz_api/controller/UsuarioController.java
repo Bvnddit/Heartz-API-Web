@@ -26,6 +26,7 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Obtener todos los usuarios", description = "Obtener todos los usuarios registrados en la base de datos")
     public List<Usuario> getAllUsuarios() {
+        // test
         return service.getAllUsuarios();
     }
 
@@ -45,9 +46,7 @@ public class UsuarioController {
     @Operation(summary = "Registrar usuario", description = "Registrar un nuevo usuario en la base de datos")
     public ResponseEntity<?> createUser(@RequestBody UsuarioDTO dto) {
         try {
-            // Forzar el rol CLIENTE para registro público (seguridad)
-            dto.setRol("CLIENTE");
-            return ResponseEntity.ok(service.crearUsuario(dto));
+            return service.crearUsuario(dto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

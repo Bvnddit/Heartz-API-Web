@@ -58,11 +58,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .requestMatchers("/usuarios/register").permitAll() // Permitir registro público
+                        .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll() // Permitir registro público
                         .requestMatchers("/auth/login").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/ventas").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/detalleventas").permitAll()
                         // Permitir acceso público a lectura de vinilos (GET)
                         .requestMatchers(HttpMethod.GET, "/vinilos/**").permitAll()
-                        // Permitir acceso público a lectura de usuarios (GET) - opcional, puedes restringirlo si es necesario
+                        // Permitir acceso público a lectura de usuarios (GET) - opcional, puedes
+                        // restringirlo si es necesario
                         .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/usuarios/**").permitAll()
                         .anyRequest().authenticated())
@@ -75,14 +79,17 @@ public class SecurityConfig {
                             System.out.println("URI: " + request.getRequestURI());
                             System.out.println("Method: " + request.getMethod());
                             if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                                System.out.println("Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-                                System.out.println("Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+                                System.out.println(
+                                        "Authentication: " + SecurityContextHolder.getContext().getAuthentication());
+                                System.out.println("Authorities: "
+                                        + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
                             }
                             System.out.println("Exception: " + accessDeniedException.getMessage());
                             System.out.println("=====================");
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"message\":\"Acceso denegado. Verifica que tengas permisos de administrador.\"}");
+                            response.getWriter().write(
+                                    "{\"message\":\"Acceso denegado. Verifica que tengas permisos de administrador.\"}");
                         }))
                 .build();
     }

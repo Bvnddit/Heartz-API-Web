@@ -7,10 +7,12 @@ import com.heartz.heartz_api.model.Usuario;
 import com.heartz.heartz_api.repository.RolRepository;
 import com.heartz.heartz_api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UsuarioService {
@@ -25,14 +27,14 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     // ---------------- CREAR ----------------
-    public Usuario crearUsuario(UsuarioDTO dto) {
+    public ResponseEntity<?> crearUsuario(UsuarioDTO dto) {
 
         if (usuarioRepo.existsById(dto.getRut())) {
-            throw new RuntimeException("El RUT ya existe");
+            return ResponseEntity.badRequest().body(Map.of("message", "El RUT ya existe"));
         }
 
         if (usuarioRepo.existsByCorreo(dto.getCorreo())) {
-            throw new RuntimeException("El correo ya está registrado");
+            return ResponseEntity.badRequest().body(Map.of("message", "El correo ya está registrado"));
         }
 
         Rol rol = rolRepository.findByNombre(dto.getRol());
@@ -45,7 +47,8 @@ public class UsuarioService {
                 .rol(rol)
                 .build();
 
-        return usuarioRepo.save(u);
+        usuarioRepo.save(u);
+        return ResponseEntity.ok(Map.of("message", "Usuario creado exitosamente"));
     }
 
     // ---------------- GET ----------------
