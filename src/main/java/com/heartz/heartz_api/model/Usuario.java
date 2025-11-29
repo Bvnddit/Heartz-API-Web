@@ -19,6 +19,10 @@ import lombok.*;
 public class Usuario implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUsuario;
+
+    @Column(unique = true)
     private String rut;
 
     private String nombre;

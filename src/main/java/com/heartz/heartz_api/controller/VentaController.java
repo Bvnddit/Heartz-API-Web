@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/ventas")
@@ -20,16 +23,21 @@ public class VentaController {
     @Autowired
     private VentaService ventaService;
 
-    @PostMapping
+    @PostMapping("/registrarventa")
     @Operation(summary = "Crear venta", description = "Crear una nueva venta")
     public ResponseEntity<?> crearVenta(@RequestBody VentaDTO ventaDTO) {
-        try {
-            Venta nuevaVenta = ventaService.registrarVenta(ventaDTO);
-            return ResponseEntity.ok(nuevaVenta);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al procesar la venta");
-        }
+        return ventaService.registrarVenta(ventaDTO);
     }
+
+    // Todas las ventas → SOLO ADMIN
+    @GetMapping("/obtenerventas")
+    public ResponseEntity<?> obtenerTodasLasVentas() {
+        return ResponseEntity.ok(ventaService.obtenerTodasLasVentas());
+    }
+
+    @GetMapping("/obtenerventasusuario/{idUsuario}")
+    public ResponseEntity<?> obtenerVentasPorUsuario(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(ventaService.obtenerVentasPorUsuario(idUsuario));
+    }
+
 }

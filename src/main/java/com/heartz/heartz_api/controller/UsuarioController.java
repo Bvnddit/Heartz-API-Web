@@ -1,5 +1,6 @@
 package com.heartz.heartz_api.controller;
 
+import com.heartz.heartz_api.dto.UpdateUsuarioDTO;
 import com.heartz.heartz_api.dto.UsuarioDTO;
 import com.heartz.heartz_api.dto.UsuarioPatchDTO;
 import com.heartz.heartz_api.model.Usuario;
@@ -30,10 +31,10 @@ public class UsuarioController {
         return service.getAllUsuarios();
     }
 
-    @GetMapping("/{rut}")
-    @Operation(summary = "Obtener usuario por RUT", description = "Obtener un usuario específico por su RUT")
-    public Usuario getUsuarioByRut(@PathVariable String rut) {
-        return service.getUsuarioByRut(rut);
+    @GetMapping("/{idUsuario}")
+    @Operation(summary = "Obtener usuario por ID", description = "Obtener un usuario específico por su ID")
+    public Usuario getUsuarioById(@PathVariable Long idUsuario) {
+        return service.getUsuarioById(idUsuario);
     }
 
     @GetMapping("/correo/{correo}")
@@ -52,28 +53,28 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{rut}")
-    @Operation(summary = "Actualizar usuario", description = "Actualizar un usuario específico por su RUT")
-    public Usuario updateUsuario(@PathVariable String rut, @RequestBody Usuario dto) {
-        return service.updateUsuario(rut, dto);
+    @PutMapping("/update/{idUsuario}")
+    @Operation(summary = "Actualizar usuario", description = "Actualizar un usuario específico por su ID")
+    public ResponseEntity<?> updateUsuario(@PathVariable Long idUsuario, @RequestBody UpdateUsuarioDTO dto) {
+        return service.updateUsuario(idUsuario, dto);
     }
 
-    @PatchMapping("/{rut}")
-    @Operation(summary = "Actualizar usuario parcialmente", description = "Actualizar un usuario específico por su RUT de forma parcial")
+    @PatchMapping("/{idUsuario}")
+    @Operation(summary = "Actualizar usuario parcialmente", description = "Actualizar un usuario específico por su ID de forma parcial")
     public ResponseEntity<?> patchUsuario(
-            @PathVariable String rut,
+            @PathVariable Long idUsuario,
             @Valid @RequestBody UsuarioPatchDTO dto) {
         try {
-            return ResponseEntity.ok(service.patchUsuario(rut, dto));
+            return ResponseEntity.ok(service.patchUsuario(idUsuario, dto));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{rut}")
-    @Operation(summary = "Eliminar usuario", description = "Eliminar un usuario específico por su RUT")
-    public void deleteUsuarioByRut(@PathVariable String rut) {
-        service.deleteUsuarioByRut(rut);
+    @DeleteMapping("/{idUsuario}")
+    @Operation(summary = "Eliminar usuario", description = "Eliminar un usuario específico por su ID")
+    public void deleteUsuarioById(@PathVariable Long idUsuario) {
+        service.deleteUsuarioById(idUsuario);
     }
 
     @DeleteMapping("/all")

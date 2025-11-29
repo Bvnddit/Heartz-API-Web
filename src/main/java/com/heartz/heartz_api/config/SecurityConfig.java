@@ -61,13 +61,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll() // Permitir registro público
                         .requestMatchers("/auth/login").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/ventas").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/ventas/registrarventa").permitAll()
                         .requestMatchers(HttpMethod.POST, "/detalleventas").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/ventas/obtenerventas").hasAnyRole("ADMIN", "EMPLEADO")    
+                        .requestMatchers(HttpMethod.GET, "/api/ventas/obtenerventasusuario/**").hasAnyRole("CLIENTE")                                                            
                         // Permitir acceso público a lectura de vinilos (GET)
                         .requestMatchers(HttpMethod.GET, "/vinilos/**").permitAll()
                         // Permitir acceso público a lectura de usuarios (GET) - opcional, puedes
                         // restringirlo si es necesario
-                        .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/usuarios/all").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/usuarios/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

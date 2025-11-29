@@ -8,8 +8,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Data
 @Schema(description = "DTO para crear una nueva venta")
 public class VentaDTO {
-    @Schema(description = "RUT del usuario que realiza la venta")
-    private String rutUsuario;
+    private Long idUsuario;
     private Integer total;
     private List<DetalleVentaDTO> detalles;
+    private String direccion;
+    private String departamento;
+    private String region;
+    private String comuna;
+    private String indicaciones;
 }

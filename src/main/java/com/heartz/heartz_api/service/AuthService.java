@@ -41,6 +41,7 @@ public class AuthService {
 
         // Preparar respuesta
         Map<String, Object> response = new HashMap<>();
+        response.put("idUsuario", user.getIdUsuario());
         response.put("token", token);
         response.put("email", user.getCorreo());
         response.put("rol", user.getRol().getNombre());

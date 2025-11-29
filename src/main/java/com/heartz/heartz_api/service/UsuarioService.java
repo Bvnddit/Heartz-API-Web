@@ -1,5 +1,6 @@
 package com.heartz.heartz_api.service;
 
+import com.heartz.heartz_api.dto.UpdateUsuarioDTO;
 import com.heartz.heartz_api.dto.UsuarioDTO;
 import com.heartz.heartz_api.dto.UsuarioPatchDTO;
 import com.heartz.heartz_api.model.Rol;
@@ -29,12 +30,16 @@ public class UsuarioService {
     // ---------------- CREAR ----------------
     public ResponseEntity<?> crearUsuario(UsuarioDTO dto) {
 
-        if (usuarioRepo.existsById(dto.getRut())) {
+        if (usuarioRepo.existsByRut(dto.getRut())) {
             return ResponseEntity.badRequest().body(Map.of("message", "El RUT ya existe"));
         }
 
         if (usuarioRepo.existsByCorreo(dto.getCorreo())) {
             return ResponseEntity.badRequest().body(Map.of("message", "El correo ya está registrado"));
+        }
+
+        if (dto.getRol() == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "El rol es obligatorio"));
         }
 
         Rol rol = rolRepository.findByNombre(dto.getRol());
@@ -47,6 +52,7 @@ public class UsuarioService {
                 .rol(rol)
                 .build();
 
+                System.out.println("Usuario creado: " + u);
         usuarioRepo.save(u);
         return ResponseEntity.ok(Map.of("message", "Usuario creado exitosamente"));
     }
@@ -56,8 +62,8 @@ public class UsuarioService {
         return usuarioRepo.findAll();
     }
 
-    public Usuario getUsuarioByRut(String rut) {
-        return usuarioRepo.findById(rut).orElse(null);
+    public Usuario getUsuarioById(Long idUsuario) {
+        return usuarioRepo.findById(idUsuario).orElse(null);
     }
 
     public Usuario getUsuarioByCorreo(String correo) {
@@ -68,24 +74,25 @@ public class UsuarioService {
     }
 
     // ---------------- UPDATE COMPLETO ----------------
-    public Usuario updateUsuario(String rut, Usuario datos) {
+    public ResponseEntity<?> updateUsuario(Long idUsuario, UpdateUsuarioDTO dto) {
 
-        Usuario u = usuarioRepo.findById(rut).orElse(null);
+        Usuario u = usuarioRepo.findById(idUsuario).orElse(null);
         if (u == null)
             return null;
 
-        u.setNombre(datos.getNombre());
-        u.setCorreo(datos.getCorreo());
-        u.setContrasena(datos.getContrasena());
-        u.setRol(datos.getRol());
+        u.setNombre(dto.getNombre());
+        u.setCorreo(dto.getCorreo());
+        u.setContrasena(dto.getContrasena());
+        u.setRol(rolRepository.findByNombre(dto.getRol()));
+        usuarioRepo.save(u);
 
-        return usuarioRepo.save(u);
+        return ResponseEntity.ok(Map.of("message", "Usuario actualizado exitosamente"));
     }
 
     // ---------------- PATCH PARCIAL ----------------
-    public Usuario patchUsuario(String rut, UsuarioPatchDTO dto) {
+    public Usuario patchUsuario(Long idUsuario, UsuarioPatchDTO dto) {
 
-        Usuario u = usuarioRepo.findById(rut).orElse(null);
+        Usuario u = usuarioRepo.findById(idUsuario).orElse(null);
         if (u == null)
             return null;
 
@@ -106,8 +113,8 @@ public class UsuarioService {
     }
 
     // ---------------- ELIMINAR ----------------
-    public void deleteUsuarioByRut(String rut) {
-        usuarioRepo.deleteById(rut);
+    public void deleteUsuarioById(Long idUsuario) {
+        usuarioRepo.deleteById(idUsuario);
     }
 
     public void deleteAllUsuarios() {

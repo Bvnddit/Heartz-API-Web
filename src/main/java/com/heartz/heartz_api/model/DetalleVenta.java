@@ -1,5 +1,7 @@
 package com.heartz.heartz_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +18,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "venta_id")
+    @JsonIgnore
     private Venta venta;
 
     @ManyToOne
